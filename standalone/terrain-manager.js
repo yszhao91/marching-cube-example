@@ -1,4 +1,5 @@
 import * as THREE from './three.module.js';
+import { terrainMaterial } from './material.js'
 
 export class TerrainManager {
 
@@ -62,19 +63,19 @@ export class TerrainManager {
 		this.indexAttribute.array = this.faces;
 		this.indexAttribute.itemSize = 1;
 		this.indexAttribute.count = this.faces.length;
-		this.indexAttribute.setUsage( THREE.DynamicDrawUsage );
+		this.indexAttribute.setUsage(THREE.DynamicDrawUsage);
 
 		this.positionAttribute = new THREE.Float32BufferAttribute();
 		this.positionAttribute.array = this.positions;
 		this.positionAttribute.itemSize = 3;
 		this.positionAttribute.count = this.positions.length / 3;
-		this.positionAttribute.setUsage( THREE.DynamicDrawUsage );
+		this.positionAttribute.setUsage(THREE.DynamicDrawUsage);
 
 		this.normalAttribute = new THREE.Float32BufferAttribute();
 		this.normalAttribute.array = this.normals;
 		this.normalAttribute.itemSize = 3;
 		this.normalAttribute.count = this.normals.length / 3;
-		this.normalAttribute.setUsage( THREE.DynamicDrawUsage );
+		this.normalAttribute.setUsage(THREE.DynamicDrawUsage);
 
 		this.geometry.setIndex(this.indexAttribute);
 		this.geometry.setAttribute('position', this.positionAttribute);
@@ -87,7 +88,7 @@ export class TerrainManager {
 		}
 
 		this.mesh = new THREE.Mesh(
-			this.geometry, [new THREE.MeshLambertMaterial({ color: 0xff0000, wireframe: false })]
+			this.geometry, [terrainMaterial]
 		);
 	}
 
