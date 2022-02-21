@@ -15,8 +15,7 @@ rockTexture.wrapT = THREE.RepeatWrapping;
 terrainMaterial.onBeforeCompile = (shader, renderer) => {
     const fs = shader.fragmentShader;
     const vs = shader.vertexShader;
-    shader.uniforms = shader.uniforms || {};
-    shader.uniforms['bbox'] = { value: new Vector4() };
+    shader.uniforms = shader.uniforms || {}; 
     terrainMaterial.uniforms = shader.uniforms;
     console.log('onBeforeCompile');
     shader.vertexShader =
@@ -106,27 +105,11 @@ uniform float opacity;
 #include <specularmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
-#ifdef USE_TRIPLANETEXTURE
-    uniform vec4 bbox; 
-    varying vec3  vtriCoord;
-    varying vec3  vtriNormal;
+#ifdef USE_TRIPLANETEXTURE 
+    varying vec3 vtriCoord;
+    varying vec3 vtriNormal;
     uniform sampler2D grassTexture;
-    uniform sampler2D rockTexture;
-    // uniform sampler2D grassTexture;
-    // uniform sampler2D grassTexture; 
-//    vec4 triplaneblend(vec3 normal,sampler2D texture,vec3 coord){
-//         vec3 blending =abs(normal,texture);
-//         blending = normalize(max(blending, 0.001)); // Force weights to sum to 1.0
-//         float b = (blending.x + blending.y + blending.z);
-//         blending /= vec3(b, b, b);
-     
-//         vec4 xaxis = texture2D( grassTexture, coord.yz*0.1);
-//         vec4 yaxis = texture2D( grassTexture, coord.xz*0.1);
-//         vec4 zaxis = texture2D( grassTexture, coord.xy*0.1);
-//         // blend the results of the 3 planar projections.
-//         vec4 tex = xaxis * blending.x + xaxis * blending.y + zaxis * blending.z;
-//         return tex;
-//     }
+    uniform sampler2D rockTexture; 
 #endif
 void main() {
     #include <clipping_planes_fragment>
@@ -140,8 +123,7 @@ void main() {
         blending = normalize(max(blending, 0.001)); // Force weights to sum to 1.0
         float b = (blending.x + blending.y + blending.z);
         blending /=b;
-
-        
+ 
         vec4 xaxis,yaxis,zaxis; 
         xaxis = texture2D(grassTexture, vtriCoord.yz*0.1);
         yaxis = texture2D(grassTexture, vtriCoord.xz*0.1);
@@ -157,9 +139,7 @@ void main() {
         vec4 tex =amount* grassTex+(1.0-amount)*rockTex;
          
         // blend the results of the 3 planar projections.
-        diffuseColor *= tex;
-        if(vtriCoord.x>bbox.x && vtriCoord.z>bbox.y && vtriCoord.x<bbox.z && vtriCoord.z<bbox.w)
-            discard;
+        diffuseColor *= tex; 
     #endif
     #include <color_fragment>
     #include <alphamap_fragment>
@@ -188,9 +168,4 @@ void main() {
     shader.uniforms.rockTexture = { value: rockTexture };
     shader.defines['USE_TRIPLANETEXTURE'] = '';
 }
-//     new THREE.ShaderMaterial({
-//     vertexShader: vs,
-//     fragmentShader: fs,
-//     defines: {},
-//     uniforms: {}
-// });
+ 
