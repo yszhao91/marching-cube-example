@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-const _MIN_NODE_SIZE = 64;
-export class QuadTree { 
-    constructor(params) { 
+const _MIN_NODE_SIZE = 128;
+export class QuadTree {
+    constructor(params) {
         const b = new THREE.Box2(params.min, params.max);
         this._root = {
             bounds: b,
@@ -80,5 +80,5 @@ export class QuadTree {
         return children;
     }
 
-    
+
 }
